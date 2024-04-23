@@ -34,6 +34,7 @@ describe('UserController', () => {
                 const response = await request(app.getHttpServer())
                     .post('/user')
                     .send(payload);
+					
 				console.log(payload + " : " + response.status);
                 expect(response.status).toBe(400);
             }
