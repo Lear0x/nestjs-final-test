@@ -12,7 +12,7 @@ export class TaskController {
         try {
             await this.taskService.addTask(addTaskDto.name, addTaskDto.userId, addTaskDto.priority);
         } catch (error) {
-            throw new ConflictException(`Error adding task: ${error.message}`);
+            throw new BadRequestException(`Error adding task: ${error.message}`);
         }
     }
 

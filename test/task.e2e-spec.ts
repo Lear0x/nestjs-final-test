@@ -88,7 +88,6 @@ describe('TaskController', () => {
                 const response = await request(app.getHttpServer())
                     .post('/task')
                     .send(payload);
-
                 expect(response.status).toBe(400);
             }
         });
