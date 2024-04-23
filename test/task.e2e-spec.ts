@@ -33,7 +33,6 @@ describe('TaskController', () => {
                 const response = await request(app.getHttpServer()).get(
                     `/task/user/${userId}`,
                 );
-
                 expect(response.status).toBe(400);
             }
         });
