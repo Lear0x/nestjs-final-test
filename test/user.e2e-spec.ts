@@ -35,7 +35,6 @@ describe('UserController', () => {
                     .post('/user')
                     .send(payload);
 					
-				console.log(payload + " : " + response.status);
                 expect(response.status).toBe(400);
             }
         });

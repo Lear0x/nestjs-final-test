@@ -1,15 +1,28 @@
-import { Controller, Get, Post, Param, Body, Delete, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Delete, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
-import { CreateUserDto } from './user.dto';
 
 @Controller()
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
-    async createUser(@Body() user: CreateUserDto): Promise<User> {
-        return this.userService.addUser(user.email);
+    async createUser(@Body() user: User): Promise<User> {
+
+		if (!user.email || !this.userService.isValidEmail(user.email)) {
+			throw new BadRequestException(`Invalid user email`);
+		}
+
+		try {
+            return await this.userService.addUser(user.email);
+        } catch (error) {
+            if (error instanceof ConflictException) {
+                throw new ConflictException(error.message); 
+			} else {
+                throw new BadRequestException(error.message); 
+			}
+			
+		}
     }
 
     @Get(':id')
