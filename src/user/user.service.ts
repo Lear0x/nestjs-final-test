@@ -17,7 +17,7 @@ export class UserService {
         if (existingUser) {
             throw new ConflictException(`User with email ${email} already exists`);
         }
-		
+
         const newUser = this.userRepository.create({ email });
         return await this.userRepository.save(newUser);
     }
@@ -55,6 +55,4 @@ export class UserService {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return emailRegex.test(email);
 	}
-	
-	
 }

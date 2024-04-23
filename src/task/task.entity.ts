@@ -12,7 +12,6 @@ export class Task {
     @Column({ default: false })
     completed: boolean;
 
-	//TODO ajouter max et min (1 et 5)
     @Column({ type: 'int', nullable: true })
     priority: number;
 
