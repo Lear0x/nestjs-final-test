@@ -9,13 +9,13 @@ export class TaskController {
 
 	@Post()
 	async addTask(@Body() task: any): Promise<void> {
-		const { name, user_id, priority } = task;
-	
-		if (!name || !user_id || !priority || priority < 1) {
+		const { name, userId, priority } = task;
+		
+		if (!name || !userId || !priority || priority < 1) {
 			throw new BadRequestException(`Error adding task: missing required fields`);
 		}
 	
-		await this.taskService.addTask(name, user_id, priority);
+		await this.taskService.addTask(name, userId, priority);
 		
     }
 

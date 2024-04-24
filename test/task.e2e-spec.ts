@@ -48,7 +48,7 @@ describe('TaskController', () => {
 				const response = await request(app.getHttpServer()).get(
 					`/task/user/${created.user.id}`,
 				);
-
+				console.log("status", response.status);
 				expect(response.status).toBe(200);
 
 				const haveAllTasksBeenReturned = response.body.every((task) =>
@@ -89,7 +89,7 @@ describe('TaskController', () => {
 				const response = await request(app.getHttpServer())
 					.post('/task')
 					.send(payload);
-	
+
 				expect(response.status).toBe(400);
 			}
 		});
@@ -127,19 +127,12 @@ describe('TaskController', () => {
 					.post('/task')
 					.send(payload);
 
-					console.log("name: ", payload.name);
-					console.log("priority: ", payload.priority);
-					console.log("userId: ", payload.userId);
-	
-					console.log("response.status: ", response.status)
-
 				expect(response.status).toBe(201);
 
 				const task = (await taskService.getTaskByName(
 					payload.name,
 				)) as any;
 
-				console.log("task: ", task);
 				expect(task).toBeDefined();
 				expect(task.name).toBe(payload.name);
 				expect(task.priority).toBe(+payload.priority);

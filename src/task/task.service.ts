@@ -22,9 +22,7 @@ export class TaskService {
     }
 
     async getTaskByName(name: string): Promise<Task> {
-		console.log("name: ", name);
         const result = await this.taskRepository.findOne({ where: { name } });
-		console.log("result: ", result);
 		return result;
     }
 
