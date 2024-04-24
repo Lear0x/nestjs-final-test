@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Param, Body, Delete, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { Task } from './task.entity';
+import { ok } from 'assert';
 
 @Controller()
 export class TaskController {
@@ -8,13 +9,14 @@ export class TaskController {
 
 	@Post()
 	async addTask(@Body() task: any): Promise<void> {
-		const { name, userId, priority } = task;
+		const { name, user_id, priority } = task;
 	
-		if (!name || !userId || !priority || priority < 1) {
+		if (!name || !user_id || !priority || priority < 1) {
 			throw new BadRequestException(`Error adding task: missing required fields`);
 		}
 	
-		await this.taskService.addTask(name, userId, priority);
+		await this.taskService.addTask(name, user_id, priority);
+		
     }
 
     @Get(':name')

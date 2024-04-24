@@ -13,14 +13,12 @@ export class TaskService {
     ) {}
 
     async addTask(name: string, id: string, priority: number): Promise<void> {
-		const user = await this.userService.getUser(id);
+		const user = await this.userService.getUserById(id);
 		if(!user) {
 			return null;
 		}
 		const task = this.taskRepository.create({ name, user, priority });
-		const result =  await this.taskRepository.save(task);
-		console.log(result);
-
+		await this.taskRepository.save(task);
     }
 
     async getTaskByName(name: string): Promise<Task> {

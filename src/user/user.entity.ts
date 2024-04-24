@@ -9,6 +9,6 @@ export class User {
 	@Column({ length: 100 })
 	email: string
 
-	@OneToMany(() => Task, (task) => task.user, { eager: true })
+	@OneToMany(() => Task, (task) => task.user, { eager: true, onDelete: 'CASCADE'})
 	task: Task[];
 }

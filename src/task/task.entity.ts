@@ -12,11 +12,8 @@ export class Task {
 
 	@Column({ type: 'int', nullable: true })
 	priority: number;
+	
 
-	@Exclude()
-	@ManyToOne(() => User, (user) => user.task, { eager: false })
+	@ManyToOne(() => User, (user) => user.task, { eager: false, onDelete: 'CASCADE'})
 	user: User;
-
-	@Column({ name: 'user_id' })
-	userId: number;
 }

@@ -38,6 +38,10 @@ export class UserController {
     @Delete(':id')
     async deleteUser(@Param('id') id: string): Promise<void> {
         await this.userService.deleteUser(id);
-        return;
     }
+
+	@Post('reset-data')
+	async resetData(): Promise<void> {
+		await this.userService.resetData();
+	}
 }
