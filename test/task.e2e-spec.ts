@@ -48,7 +48,7 @@ describe('TaskController', () => {
 				const response = await request(app.getHttpServer()).get(
 					`/task/user/${created.user.id}`,
 				);
-				console.log("status", response.status);
+
 				expect(response.status).toBe(200);
 
 				const haveAllTasksBeenReturned = response.body.every((task) =>

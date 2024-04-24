@@ -34,7 +34,7 @@ describe('UserController', () => {
                 const response = await request(app.getHttpServer())
                     .post('/user')
                     .send(payload);
-					
+
                 expect(response.status).toBe(400);
             }
         });
@@ -51,7 +51,8 @@ describe('UserController', () => {
                 const response = await request(app.getHttpServer())
                     .post('/user')
                     .send(payload);
-				expect(response.status).toBe(201);
+
+                expect(response.status).toBe(201);
 
                 const user = (await userService.getUser(payload.email)) as any;
                 expect(user).toBeDefined();
