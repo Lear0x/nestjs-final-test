@@ -7,21 +7,14 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
-    async createUser(@Body() user: User): Promise<User> {
+    async addUser(@Body() user: User): Promise<void> {
 
 		if (!user.email || !this.userService.isValidEmail(user.email)) {
 			throw new BadRequestException(`Invalid user email`);
 		}
-
-		try {
-            return await this.userService.addUser(user.email);
-        } catch (error) {
-            if (error instanceof ConflictException) {
-                throw new ConflictException(error.message); 
-			} else {
-                throw new BadRequestException(error.message); 
-			}
-			
+		const userResponse = await this.userService.addUser(user.email);
+		if(userResponse === null) {
+			throw new ConflictException(`User with email ${user.email} already exists`);
 		}
     }
 

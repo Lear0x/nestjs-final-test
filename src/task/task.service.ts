@@ -2,25 +2,32 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { Repository } from 'typeorm';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class TaskService {
 	constructor(
         @InjectRepository(Task)
         private taskRepository: Repository<Task>,
+		private readonly userService: UserService,
     ) {}
 
     async addTask(name: string, id: string, priority: number): Promise<void> {
-        const task = new Task();
-        task.name = name;
-        task.id = id;
-        task.priority = priority;
+		const user = await this.userService.getUser(id);
+		if(!user) {
+			return null;
+		}
+		const task = this.taskRepository.create({ name, user, priority });
+		const result =  await this.taskRepository.save(task);
+		console.log(result);
 
-        await this.taskRepository.save(task);
     }
 
     async getTaskByName(name: string): Promise<Task> {
-        return await this.taskRepository.findOne({ where: { name } });
+		console.log("name: ", name);
+        const result = await this.taskRepository.findOne({ where: { name } });
+		console.log("result: ", result);
+		return result;
     }
 
 	async getUserTasks(id: string): Promise<Task[]> {

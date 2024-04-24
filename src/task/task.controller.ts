@@ -1,19 +1,20 @@
 import { Controller, Get, Post, Param, Body, Delete, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { Task } from './task.entity';
-import { AddTaskDto } from './task.dto';
 
 @Controller()
 export class TaskController {
     constructor(private readonly taskService: TaskService) {}
 
-    @Post()
-    async addTask(@Body() addTaskDto: AddTaskDto): Promise<void> {
-        try {
-            await this.taskService.addTask(addTaskDto.name, addTaskDto.userId, addTaskDto.priority);
-        } catch (error) {
-            throw new BadRequestException(`Error adding task: ${error.message}`);
-        }
+	@Post()
+	async addTask(@Body() task: any): Promise<void> {
+		const { name, userId, priority } = task;
+	
+		if (!name || !userId || !priority || priority < 1) {
+			throw new BadRequestException(`Error adding task: missing required fields`);
+		}
+	
+		await this.taskService.addTask(name, userId, priority);
     }
 
     @Get(':name')
