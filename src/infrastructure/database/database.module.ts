@@ -1,16 +1,27 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { getConnectionOptions } from 'typeorm';
+import { ConfigurationModule } from '../configuration/configuration.module';
+import { ConfigurationService } from '../configuration/configuration.service';
+import { DATABASE_NAME, DATABASE_PORT } from '../configuration/model/database-configuration';
+import { Task } from '../../task/task.entity';
+import { User } from '../../user/user.entity';
 
-@Module({	
-	imports: [
-        ConfigModule.forRoot(),
+@Module({
+    imports: [
+        ConfigurationModule,
         TypeOrmModule.forRootAsync({
-            useFactory: async () =>
-                Object.assign(await getConnectionOptions(), {
-                    autoLoadEntities: true,
-                }),
+            imports: [ConfigurationModule],
+            inject: [ConfigurationService],
+            useFactory: async (configService: ConfigurationService) => ({
+                type: 'postgres',
+                host: 'localhost',
+                port: parseInt(configService.databaseConfig[DATABASE_PORT]),
+                database: configService.databaseConfig[DATABASE_NAME],
+                username: 'postgres',
+                password: 'postgres',
+                entities: [Task, User],
+                synchronize: true,
+            }),
         }),
     ],
 })
