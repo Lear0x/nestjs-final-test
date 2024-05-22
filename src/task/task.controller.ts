@@ -30,8 +30,8 @@ export class TaskController {
 
     @Get('user/:userId')
     async getUserTasks(@Param('userId') userId: string): Promise<Task[]> {
-		if (userId.length !== 36) {
-            throw new BadRequestException(`Invalid user ID format`);
+        if (userId.length !== 36) {
+            throw new BadRequestException('Invalid user ID format');
         }
         return this.taskService.getUserTasks(userId);
     }

@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable, Logger, NotImplementedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { Repository } from 'typeorm';
@@ -6,9 +6,10 @@ import { UserService } from '../user/user.service';
 
 @Injectable()
 export class TaskService {
+	private readonly logger = new Logger(TaskService.name);
 	constructor(
         @InjectRepository(Task)
-        private taskRepository: Repository<Task>,
+        private readonly taskRepository: Repository<Task>,
 		private readonly userService: UserService,
     ) {}
 
@@ -26,10 +27,17 @@ export class TaskService {
 		return result;
     }
 
-	async getUserTasks(id: string): Promise<Task[]> {
-        return await this.taskRepository.find({ where: { id } });
-    }
-
+    async getUserTasks(userId: string): Promise<Task[]> {
+        try {
+            const tasks = await this.taskRepository.find({ where: { userId } });
+            this.logger.debug(`Fetched ${tasks.length} tasks for userId ${userId}`);
+            return tasks;
+        } catch (error) {
+            this.logger.error(`Failed to fetch tasks for userId ${userId}`, error.stack);
+            throw error;
+        }
+	}
+	
     async resetData(): Promise<void> {
         await this.taskRepository.delete({});
     }

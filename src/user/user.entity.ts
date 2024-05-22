@@ -3,12 +3,12 @@ import { Task } from '../task/task.entity';
 
 @Entity()
 export class User {
-	@PrimaryGeneratedColumn('uuid')
-	id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-	@Column({ length: 100 })
-	email: string
+    @Column({ length: 100 })
+    email: string;
 
-	@OneToMany(() => Task, (task) => task.user, { eager: true, onDelete: 'CASCADE'})
-	task: Task[];
+    @OneToMany(() => Task, (task) => task.user, { eager: true })
+    task: Task[];
 }

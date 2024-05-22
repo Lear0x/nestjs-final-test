@@ -4,16 +4,19 @@ import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Task {
-	@PrimaryGeneratedColumn('uuid')
-	id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-	@Column({ length: 255 })
-	name: string;
+    @Column({ length: 255 })
+    name: string;
 
-	@Column({ type: 'int', nullable: true })
-	priority: number;
-	
+    @Column({ type: 'int', nullable: true })
+    priority: number;
 
-	@ManyToOne(() => User, (user) => user.task, { eager: false, onDelete: 'CASCADE'})
-	user: User;
+    @ManyToOne(() => User, (user) => user.task, { eager: false, onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'userId' })
+    user: User;
+
+    @Column({ type: 'uuid' })
+    userId: string; 
 }
