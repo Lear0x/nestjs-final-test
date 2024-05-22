@@ -44,9 +44,4 @@ export class UserService {
 	async resetData(): Promise<void> {
 		await this.userRepository.delete({});
 	}
-
-	isValidEmail(email: string): boolean {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	}
 }

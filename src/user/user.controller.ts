@@ -1,15 +1,16 @@
 import { Controller, Get, Post, Param, Body, Delete, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { UserService } from './user.service';
+import { VerifMailService } from '../verifMail.service';
 import { User } from './user.entity';
 
 @Controller()
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService, private readonly verifMailService: VerifMailService) {}
 
     @Post()
     async addUser(@Body() user: User): Promise<void> {
 
-		if (!user.email || !this.userService.isValidEmail(user.email)) {
+		if (!user.email || !this.verifMailService.isValidEmail(user.email)) {
 			throw new BadRequestException(`Invalid user email`);
 		}
 		const userResponse = await this.userService.addUser(user.email);
